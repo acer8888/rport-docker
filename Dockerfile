@@ -19,7 +19,7 @@ FROM guacamole/guacd:latest
 
 USER root
 
-ARG TZ="UTC"
+ARG TZ="Americas\Los_Angeles"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
 
@@ -37,12 +37,6 @@ COPY supervisord.conf /etc/supervisor/supervisord.conf
 RUN useradd -d /var/lib/rport -m -U -r -s /bin/false rport
 
 RUN touch /var/lib/rport/rport.log && chown rport /var/lib/rport/rport.log
-
-COPY jail.conf /etc/fail2ban/
-COPY defaults-debian.conf  /etc/fail2ban/jail.d
-COPY rportd-client-connect.conf /etc/fail2ban/filter.d/
-
-RUN service fail2ban restart
 
 USER rport
 
